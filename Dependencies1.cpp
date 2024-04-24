@@ -5,23 +5,23 @@
 
 bool direction = true;
 double t = 0.002;
-struct Ball {//ÇòµÄ½á¹¹Ìå
+struct Ball {//çƒçš„ç»“æ„ä½“
 	GLdouble y;
 	GLdouble vy;
 };
 Ball ball;
 void init(void) {
-	//³õÊ¼»¯ÇòÌåÊôĞÔ
+	//åˆå§‹åŒ–çƒä½“å±æ€§
 	ball.y = 8.7501;
 	ball.vy = 0.0;
 
-	glClearColor(0.0, 0.0, 0.0, 1.0);//±³¾°ÑÕÉ«
+	glClearColor(0.0, 0.0, 0.0, 1.0);//èƒŒæ™¯é¢œè‰²
 
 }
 void display(void) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//Çå¿ÕÑÕÉ«»º³åÇøºÍÉî¶È»º³åÇø£¬ÒÔ×¼±¸½øĞĞĞÂÒ»Ö¡µÄ»æÖÆ
-	glPushMatrix();//±íÊ¾½«µ±Ç°µÄ¾ØÕó×´Ì¬±£´æµ½¾ØÕó¶ÑÕ»ÖĞ£¬µ÷ÓÃglPopMatrix()¿ÉÒÔ»Ö¸´Ö®Ç°±£´æµÄ¾ØÕó×´Ì¬¡£
-	glColor3f(0.0, 0.9, 0.0);//±ß¿òÑÕÉ«
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//æ¸…ç©ºé¢œè‰²ç¼“å†²åŒºå’Œæ·±åº¦ç¼“å†²åŒºï¼Œä»¥å‡†å¤‡è¿›è¡Œæ–°ä¸€å¸§çš„ç»˜åˆ¶
+	glPushMatrix();//è¡¨ç¤ºå°†å½“å‰çš„çŸ©é˜µçŠ¶æ€ä¿å­˜åˆ°çŸ©é˜µå †æ ˆä¸­ï¼Œè°ƒç”¨glPopMatrix()å¯ä»¥æ¢å¤ä¹‹å‰ä¿å­˜çš„çŸ©é˜µçŠ¶æ€ã€‚
+	glColor3f(0.0, 0.9, 0.0);//è¾¹æ¡†é¢œè‰²
 	glBegin(GL_LINES);
 	glVertex2f(-5.0, 9.0);
 	glVertex2f(5.0, 9.0);
@@ -32,16 +32,16 @@ void display(void) {
 	glVertex2f(-5.0, -3.0);
 	glVertex2f(-5.0, 9.0);
 	glEnd();
-	glColor3f(0.0, 1.0, 1.0);//Ğ¡ÇòÑÕÉ«
-	glTranslated(0, ball.y, 0); //½«»æÍ¼ÖĞĞÄÒÆ¶¯µ½ÇòÌåµÄÖĞĞÄ
-	glutSolidSphere(1.5, 50, 50); //»æÖÆÒ»¸öÇòÌå
+	glColor3f(0.0, 1.0, 1.0);//å°çƒé¢œè‰²
+	glTranslated(0, ball.y, 0); //å°†ç»˜å›¾ä¸­å¿ƒç§»åŠ¨åˆ°çƒä½“çš„ä¸­å¿ƒ
+	glutSolidSphere(1.5, 50, 50); //ç»˜åˆ¶ä¸€ä¸ªçƒä½“
 	if (direction) {
 		ball.y = ball.y - (ball.vy * t + 0.5 * G * t * t);
 		ball.vy = ball.vy + G * t;
 		if (ball.y <= -1.5) {
 			direction = false;
-			ball.vy *= ENERGY_LOSS_COEFFICIENT; // Ã¿´ÎÅö×²ºóËÙ¶È¼õĞ¡
-			// Èç¹ûËÙ¶È½Ó½üÁã£¬ÔòÍ£Ö¹ÔË¶¯
+			ball.vy *= ENERGY_LOSS_COEFFICIENT; // æ¯æ¬¡ç¢°æ’åé€Ÿåº¦å‡å°
+			// å¦‚æœé€Ÿåº¦æ¥è¿‘é›¶ï¼Œåˆ™åœæ­¢è¿åŠ¨
 			if (ball.vy < 0.01) {
 				ball.vy = 0.0;
 			}
@@ -53,18 +53,18 @@ void display(void) {
 		if (ball.y >= 7.5) {
 			direction = true;
 			ball.vy *= ENERGY_LOSS_COEFFICIENT;
-			// Èç¹ûËÙ¶È½Ó½üÁã£¬ÔòÍ£Ö¹ÔË¶¯
+			// å¦‚æœé€Ÿåº¦æ¥è¿‘é›¶ï¼Œåˆ™åœæ­¢è¿åŠ¨
 			if (ball.vy < 0.01) {
 				ball.vy = 0.0;
 			}
 		}
 	}
 	glPopMatrix();
-	//½»»»Ç°ºó»º³åÇø
+	//äº¤æ¢å‰åç¼“å†²åŒº
 	glutSwapBuffers();
 }
 
-void timer(int value)//¶¨Ê±´¥·¢äÖÈ¾Ö¡µÄÖØ»æÊÂ¼ş£¬²¢Éè¶¨ÁËÒ»¸öÃ¿¸ôÁ½ºÁÃë´¥·¢Ò»´ÎµÄ¶¨Ê±Æ÷¡£
+void timer(int value)//å®šæ—¶è§¦å‘æ¸²æŸ“å¸§çš„é‡ç»˜äº‹ä»¶ï¼Œå¹¶è®¾å®šäº†ä¸€ä¸ªæ¯éš”ä¸¤æ¯«ç§’è§¦å‘ä¸€æ¬¡çš„å®šæ—¶å™¨ã€‚
 {
 	glutPostRedisplay();
 	glutTimerFunc(2, timer, 0);
@@ -85,11 +85,11 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(600, 600);
 	glutInitWindowPosition(450, 100);
-	glutCreateWindow("Ğ¡Çò×ÔÓÉÂäÌå");
+	glutCreateWindow("å°çƒè‡ªç”±è½ä½“");
 	init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-	glutTimerFunc(2, timer, 0);//¶¨Ê±Æ÷Ã¿Á½Ãë£¨2ºÁÃë£©¾Í»áµ÷ÓÃ'timer'º¯Êı
+	glutTimerFunc(2, timer, 0);//å®šæ—¶å™¨æ¯ä¸¤ç§’ï¼ˆ2æ¯«ç§’ï¼‰å°±ä¼šè°ƒç”¨'timer'å‡½æ•°
 	glutMainLoop();
 	return 0;
 }
