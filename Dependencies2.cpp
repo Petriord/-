@@ -1,6 +1,6 @@
 // OpenGLStarter.cpp : Defines the entry point for the console application.
 
-//ĞèÒª°üº¬µÄÍ·ÎÄ¼ş
+//éœ€è¦åŒ…å«çš„å¤´æ–‡ä»¶
 #define GLUT_DISABLE_ATEXIT_HACK 
 #include<GL/freeglut_std.h>
 #include <windows.h>
@@ -10,13 +10,13 @@
 
 #include <process.h>
 
-//¶¨ÒåÊä³ö´°¿ÚµÄ´óĞ¡
+//å®šä¹‰è¾“å‡ºçª—å£çš„å¤§å°
 #define WINDOW_HEIGHT 300
 #define WINDOW_WIDTH 500
 
-//ÉãÏñ»úÀëÎïÌåµÄ¾àÀë
+//æ‘„åƒæœºç¦»ç‰©ä½“çš„è·ç¦»
 GLfloat G_fDistance = 3.6f;
-//ÎïÌåµÄĞı×ª½Ç¶È 
+//ç‰©ä½“çš„æ—‹è½¬è§’åº¦ 
 GLfloat G_fAngle_horizon = 0.0f;
 GLfloat G_fAngle_vertical = 0.0f;
 
@@ -25,39 +25,39 @@ void myinit(void);
 void myReshape(GLsizei w, GLsizei h);
 void display(void);
 
-//ÏìÓ¦¼üÅÌÊäÈë, ´Ó¶øÉè¶¨ÎïÌåÒÆ½üÒÆÔ¶ÒÔ¼°Ğı×ªµÄ»Øµ÷º¯Êı
+//å“åº”é”®ç›˜è¾“å…¥, ä»è€Œè®¾å®šç‰©ä½“ç§»è¿‘ç§»è¿œä»¥åŠæ—‹è½¬çš„å›è°ƒå‡½æ•°
 void processSpecialKeys(int key, int x, int y);
 void processNormalKeys(unsigned char key, int x, int y);
 
 
 
-//Ö÷º¯Êı
+//ä¸»å‡½æ•°
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 
-	//³õÊ¼»¯OPENGLÏÔÊ¾·½Ê½
+	//åˆå§‹åŒ–OPENGLæ˜¾ç¤ºæ–¹å¼
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	//	glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA);
 
-		//Éè¶¨OPENGL´°¿ÚÎ»ÖÃºÍ´óĞ¡
+		//è®¾å®šOPENGLçª—å£ä½ç½®å’Œå¤§å°
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100);
 
-	//´ò¿ª´°¿Ú
+	//æ‰“å¼€çª—å£
 	glutCreateWindow("OpenGL");
 
-	//µ÷ÓÃ³õÊ¼»¯º¯Êı
+	//è°ƒç”¨åˆå§‹åŒ–å‡½æ•°
 	myinit();
 
-	//Éè¶¨´°¿Ú´óĞ¡±ä»¯µÄ»Øµ÷º¯Êı
+	//è®¾å®šçª—å£å¤§å°å˜åŒ–çš„å›è°ƒå‡½æ•°
 	glutReshapeFunc(myReshape);
 
-	//Éè¶¨¼üÅÌ¿ØÖÆµÄ»Øµ÷º¯Êı
+	//è®¾å®šé”®ç›˜æ§åˆ¶çš„å›è°ƒå‡½æ•°
 	glutSpecialFunc(processSpecialKeys);
 	glutKeyboardFunc(processNormalKeys);
 
-	//¿ªÊ¼OPENGLµÄÑ­»·
+	//å¼€å§‹OPENGLçš„å¾ªç¯
 	glutDisplayFunc(display);
 
 	glutIdleFunc(display);
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 }
 
 
-//ÓÃ»§³õÊ¼»¯º¯Êı
+//ç”¨æˆ·åˆå§‹åŒ–å‡½æ•°
 void myinit(void)
 {
 	//your initialization code
@@ -79,45 +79,45 @@ void myinit(void)
 	//	GLfloat a = 0.0f;
 }
 
-//´°¿Ú´óĞ¡±ä»¯Ê±µÄ»Øµ÷º¯Êı
+//çª—å£å¤§å°å˜åŒ–æ—¶çš„å›è°ƒå‡½æ•°
 void myReshape(GLsizei w, GLsizei h)
 {
-	//Éè¶¨ÊÓÇø
+	//è®¾å®šè§†åŒº
 	glViewport(0, 0, w, h);
 
-	//Éè¶¨Í¸ÊÓ·½Ê½
+	//è®¾å®šé€è§†æ–¹å¼
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60.0, 1.0 * (GLfloat)w / (GLfloat)h, 1.0, 30.0);
-	//	gluPerspective(60.0, 1.0, 1.0, 30.0);	//µ÷Õû´°¿Ú±ÈÀıÊ±ÎïÌå»á±äĞÎ
+	//	gluPerspective(60.0, 1.0, 1.0, 30.0);	//è°ƒæ•´çª—å£æ¯”ä¾‹æ—¶ç‰©ä½“ä¼šå˜å½¢
 	//  glFrustum (-1.0, 1.0, -1.0, 1.0, 1.0, 30.0);
 }
 
-//Ã¿èåOpenGL¶¼»áµ÷ÓÃÕâ¸öº¯Êı£¬ÓÃ»§Ó¦¸Ã°ÑÏÔÊ¾´úÂë·ÅÔÚÕâ¸öº¯ÊıÖĞ
+//æ¯æ¡¢OpenGLéƒ½ä¼šè°ƒç”¨è¿™ä¸ªå‡½æ•°ï¼Œç”¨æˆ·åº”è¯¥æŠŠæ˜¾ç¤ºä»£ç æ”¾åœ¨è¿™ä¸ªå‡½æ•°ä¸­
 void display(void)
 {
-	//ÉèÖÃÇå³ıÆÁÄ»µÄÑÕÉ«£¬²¢Çå³ıÆÁÄ»ºÍÉî¶È»º³å
+	//è®¾ç½®æ¸…é™¤å±å¹•çš„é¢œè‰²ï¼Œå¹¶æ¸…é™¤å±å¹•å’Œæ·±åº¦ç¼“å†²
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//	glEnable(GL_ALPHA_TEST);
 	//	glAlphaFunc(GL_LESS, 0.5f);
 
-		//ÉèÖÃ³ÉÄ£ĞÍ¾ØÕóÄ£Ê½
+		//è®¾ç½®æˆæ¨¡å‹çŸ©é˜µæ¨¡å¼
 	glMatrixMode(GL_MODELVIEW);
 
-	//ÔØÈëµ¥Î»»¯¾ØÕó
+	//è½½å…¥å•ä½åŒ–çŸ©é˜µ
 	glLoadIdentity();
 
-	//×ø±êÖĞĞÄÏòZÖáÆ½ÒÆ-G_fDistance (Ê¹×ø±êÖĞĞÄÎ»ÓÚÉãÏñ»úÇ°·½)
+	//åæ ‡ä¸­å¿ƒå‘Zè½´å¹³ç§»-G_fDistance (ä½¿åæ ‡ä¸­å¿ƒä½äºæ‘„åƒæœºå‰æ–¹)
 	glTranslatef(0.0, 0.0, -G_fDistance);
 	glRotatef(G_fAngle_horizon, 0.0f, 1.0f, 0.0f);
 	glRotatef(G_fAngle_vertical, 1.0f, 0.0f, 0.0f);
 
 
-	//»æÖÆÎïÌå
+	//ç»˜åˆ¶ç‰©ä½“
 
-	//»­Ò»¸öÕı·½ĞÎÃæ
+	//ç”»ä¸€ä¸ªæ­£æ–¹å½¢é¢
 	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 	//	glColor3ub(255, 0, 255);
 	glBegin(GL_QUADS);
@@ -127,13 +127,13 @@ void display(void)
 	glVertex3f(-1.0, 1.0f, 0.0f);
 	glEnd();
 
-	//»­Ò»¸ö²èºø
+	//ç”»ä¸€ä¸ªèŒ¶å£¶
 	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 	glutWireTeapot(1.0);
 	//	glutSolidTeapot(1.0);
 
 
-		//½»»»Ç°ºó»º³åÇø
+		//äº¤æ¢å‰åç¼“å†²åŒº
 	glutSwapBuffers();
 	//	glFlush();
 }
