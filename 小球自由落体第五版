@@ -1,0 +1,69 @@
+#include <windows.h>
+#include <GL/freeglut.h>
+#define G 9.8
+
+class Ball {
+public:
+	double y;   // 小球位置
+	double vy;  // 小球速度
+	Ball():y(8.0), vy(0.0) {}  // 构造函数初始化球体属性
+	void display();
+	void reshape(int w, int h);
+	void timer(int val);
+};
+Ball ball;
+void Ball::display()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//清空颜色缓冲区和深度缓冲区，以准备进行新一帧的绘制
+	glPushMatrix();//表示将当前的矩阵状态保存到矩阵堆栈中，调用glPopMatrix()可以恢复之前保存的矩阵状态。
+	glColor3f(0.0, 0.9, 0.0);
+	glBegin(GL_LINES);
+	glVertex2f(-5.0, 9.0);
+	glVertex2f(5.0, 9.0);
+	glVertex2f(5.0, 9.0);
+	glVertex2f(5.0, -3.0);
+	glVertex2f(5.0, -3.0);
+	glVertex2f(-5.0, -3.0);
+	glVertex2f(-5.0, -3.0);
+	glVertex2f(-5.0, 9.0);
+	glEnd();
+	glColor3f(0.0, 1.0, 1.0);//小球颜色
+	glTranslated(0, y, 0);//将绘图中心转移到球心
+	glutSolidSphere(1.0, 50, 50);//绘制一个球体
+	ball.vy = vy + G * 0.002;
+	ball.y = y - vy * 0.002;
+	if (ball.y <= -2.0) {
+		ball.vy = -vy * 0.9;
+	}
+	glPopMatrix();
+	//交换前后缓冲区
+	glutSwapBuffers();
+}
+
+void Ball::reshape(int w, int h)  {
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+	glOrtho(-15, 15, -15 * (GLfloat)h / (GLfloat)w, 15 * (GLfloat)h / (GLfloat)w, -15, 15);
+	//窗口宽度小于等于高度下设置正射投影矩阵
+}
+
+void timer(int val) {
+	glutPostRedisplay();//标记当前窗口需要重新绘制。
+	//通过glutMainLoop下一次循环时，窗口显示将被回调以重新显示窗口的正常面板
+	glutTimerFunc(2, timer, 0);
+}
+
+int main(int argc, char** argv) {
+
+	glutInit(&argc, argv);//初始化GLUT库并处理命令行参数，&arc表示命令行参数个数的指针，argv表示行参数的指针数组
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	//设置双缓冲类型，绘图指令在缓冲区绘制；RGB颜色模式；深度缓存
+	glutInitWindowSize(600, 600);//窗口的长宽
+	glutInitWindowPosition(1000, 100);//显示窗口在电脑屏幕上的位置
+	glutCreateWindow("小球自由落体");
+	glClearColor(0.0, 0.0, 0.0, 1.0);//背景颜色
+	glutDisplayFunc([]() { ball.display(); });//lambda表达式作为参数传递给函数
+	glutReshapeFunc([](int w, int h) { ball.reshape(w, h); });
+	glutTimerFunc(2, timer, 0);//定时器每两秒（2毫秒）就会调用'timer'函数
+	glutMainLoop();//启动OpenGL窗口，使得OpenGL事件循环继续运行
+	return 0;
+}
