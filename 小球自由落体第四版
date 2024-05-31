@@ -1,0 +1,75 @@
+#include <windows.h>
+#include <GL/freeglut.h>
+#define G 9.8
+
+double t = 0.002;
+class Ball {
+public:
+	double y;//小球位置
+	double vy;//小球速度
+	void init(void);
+	void display();
+	void reshape(int w, int h);
+	void timer(int val);
+
+};
+Ball ball;
+void init(void) {	//初始化球体属性
+	ball.y = 8.0;
+	ball.vy = 0.0;
+	glClearColor(0.0, 0.0, 0.0, 1.0);//背景颜色
+}
+void display() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//清空颜色缓冲区和深度缓冲区，以准备进行新一帧的绘制
+	glPushMatrix();//表示将当前的矩阵状态保存到矩阵堆栈中，调用glPopMatrix()可以恢复之前保存的矩阵状态。
+	glColor3f(0.0, 0.9, 0.0);//边框颜色
+	glBegin(GL_LINES);
+	glVertex2f(-5.0, 9.0);
+	glVertex2f(5.0, 9.0);
+	glVertex2f(5.0, 9.0);
+	glVertex2f(5.0, -3.0);
+	glVertex2f(5.0, -3.0);
+	glVertex2f(-5.0, -3.0);
+	glVertex2f(-5.0, -3.0);
+	glVertex2f(-5.0, 9.0);
+	glEnd();
+	glColor3f(0.0, 1.0, 1.0);//小球颜色
+	glTranslated(0, ball.y, 0); //将绘图中心移动到球体的中心
+	glutSolidSphere(1.0, 50, 50); //绘制一个球体
+	ball.vy = ball.vy + G * t;
+	ball.y = ball.y - ball.vy*t;
+	if (ball.y <= -2.0) {
+		ball.vy = -ball.vy*0.9;
+	}
+	glPopMatrix();
+	//交换前后缓冲区
+	glutSwapBuffers();
+}
+
+void reshape(int w, int h) {
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+	glOrtho(-15, 15, -15 * (GLfloat)h / (GLfloat)w, 15 * (GLfloat)h / (GLfloat)w, -15, 15);
+	//窗口宽度小于等于高度下设置正射投影矩阵
+}
+
+void timer(int val)//定时触发渲染帧的重绘事件，并设定了一个每隔两毫秒触发一次的定时器。
+{
+	glutPostRedisplay();//标记当前窗口需要重新绘制。
+	//通过glutMainLoop下一次循环时，窗口显示将被回调以重新显示窗口的正常面板
+	glutTimerFunc(2, timer, 0);
+}
+int main(int argc, char** argv) {
+	Ball ball;
+	glutInit(&argc, argv);//初始化GLUT库并处理命令行参数，&arc表示命令行参数个数的指针，argv表示行参数的指针数组
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	//设置双缓冲类型，绘图指令在缓冲区绘制；RGB颜色模式；深度缓存
+	glutInitWindowSize(600, 600);//窗口的长宽
+	glutInitWindowPosition(1000, 100);//显示窗口在电脑屏幕上的位置
+	glutCreateWindow("小球自由落体");
+	init(); //初始化球体的属性并设置背景颜色
+	glutDisplayFunc(display);//display函数重绘窗口
+	glutReshapeFunc(reshape);//reshape函数设置视口和投影矩阵处理窗口大小变化
+	glutTimerFunc(2, timer, 0);//定时器每两秒（2毫秒）就会调用'timer'函数
+	glutMainLoop();//启动OpenGL窗口，使得OpenGL事件循环继续运行
+	return 0;
+}
