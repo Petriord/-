@@ -1,3 +1,2 @@
-# -
+# 小球自由落体运动
 这是用OpenGL在visual studio2017上实现的有关小球落体运动的文件
-我尝试了两种方法在Dependence.cpp和文本文档保存了代码
