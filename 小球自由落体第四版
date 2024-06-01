@@ -59,7 +59,7 @@ void timer(int val)//定时触发渲染帧的重绘事件，并设定了一个�
 	glutTimerFunc(2, timer, 0);
 }
 int main(int argc, char** argv) {
-	Ball ball;
+
 	glutInit(&argc, argv);//初始化GLUT库并处理命令行参数，&arc表示命令行参数个数的指针，argv表示行参数的指针数组
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	//设置双缓冲类型，绘图指令在缓冲区绘制；RGB颜色模式；深度缓存
