@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <GL/freeglut.h>
 #define G 9.8
-
+double t = 0.002;
 class Ball {
 public:
 	double y;   // 小球位置
@@ -30,10 +30,10 @@ void Ball::display()
 	glColor3f(0.0, 1.0, 1.0);//小球颜色
 	glTranslated(0, y, 0);//将绘图中心转移到球心
 	glutSolidSphere(1.0, 50, 50);//绘制一个球体
-	ball.vy = vy + G * 0.002;
-	ball.y = y - vy * 0.002;
+	ball.vy = vy + G * t;
+	ball.y = y - vy * t;
 	if (ball.y <= -2.0) {
-		ball.vy = -vy * 0.9;
+		ball.vy = -vy * 0.9; 
 	}
 	glPopMatrix();
 	//交换前后缓冲区
